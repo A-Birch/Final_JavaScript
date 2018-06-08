@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+    <meta name="Aleksandr Berezkin" content="">
+    <title>PizzaRio</title>
+	
+	<!-- FONTS    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,900" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    
+     <!-- CSS    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        
+    <link rel="stylesheet" href="css/normalize.css">
+     <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"> -->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+     <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="css/jumbotron-narrow.css">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- [if it IE 9]
+    <script src="http://html5shiv.googleecode.com/svn/trunk/html5.js"></script>
+     -->
+     
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]> -->
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <!--[endif]-->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    
+</head>
+<body>
+	<div class="container">
+		<div class="header clearfix">
+			<h3 class="pull-right">Be yourself. Create your own beautiful pizza!</h3>
+			
+			<figure id="logo"></figure>
+		</div>
+
+		<figure id="pic"></figure>
+
+		<div class="row marketing">
+			<form method="post" action="mailto:eralang@mail.ru" name="ContactForm">
+           
+            <!----------------- DELIVERY LOCATION ---------------------->
+            
+			    <fieldset id="delivery">
+                   <legend>DELIVERY LOCATION</legend>
+                   <p><span class="req">&#42;</span>Indicates required field.</p>
+                    <div class="row">
+                        <label class="col-xs-3" for="name"><span class="req">&#42;</span>Full Name:</label>
+                        <input class="col-xs-9" type="text" id="name" name="name" value="" placeholder="Ivan Petrov"><div class="req"><span></span></div>
+                    </div>
+                    <div class="row">
+                        <label class="col-xs-3" for="addressType"><span class="req">&#42;</span>Address type:</label>
+                        <select class="col-xs-9" id="addressType" name="addressType">
+                            <option value="house">House</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="business">Business</option>
+                            <option value="campus">Campus</option>
+                            <option value="hotel">Hotel</option>
+                            <option value="dorm">Dorm</option>
+                            <option value="other">Other</option>
+                        </select><br><br>
+                    </div>
+                    <div id="other" class="row">
+                        <label class="col-xs-3" for="otherAddressType">Other Address Type</label>
+                        <input class="col-xs-9" type="text" id="otherAddressType" value=""><br><br>
+                    </div>
+                    <div class="row">
+                        <label class="col-xs-3" for="address"><span class="req">&#42;</span>Street Address:</label>
+                        <input class="col-xs-9" type="text" id="address" value=""><br><br>
+                    </div>
+                    <div class="row">
+                        <label class="col-xs-3" for="room"><span class="req">&#42;</span>Suite/Room/Apt#</label>
+                        <input class="col-xs-9" type="text" id="room" value=""><br><br>
+                    </div>
+                    <div class="row">
+                        <label class="col-xs-3 col-sm-3" for="city"><span class="req">&#42;</span>City:</label>
+                        <input class="col-xs-9 col-sm-3" type="text" id="city" value="">
+                        <label class="col-xs-3 col-sm-1" for="state"><span class="req">&#42;</span>State:</label>
+                        <input class="col-xs-9 col-sm-1" type="text" id="state" name="state" value="">
+                        <label class="col-xs-3 col-sm-2" for="zip"><span class="req">&#42;</span>Zip Code:</label>
+                        <input class="col-xs-9 col-sm-2" type="text" id="zip" name="zip" value="">
+                    </div>
+                    <div class="row">
+                        <label class="col-xs-3 col-sm-3" for="phone"><span class="req">&#42;</span>Phone Number:</label>
+                        <input class="col-xs-9 col-sm-3" type="text" id="phone" placeholder="(555) 555-5555" value="">
+                        <label class="col-xs-3 col-sm-2" for="email">E-mail:</label>
+                        <input class="col-xs-9 col-sm-4" type="text" id="email" value="">
+                    </div>
+                    
+                    <div class="row">
+                    	<input id="next" class="btn-lg" type="button" value="Next"><i class="fas fa-arrow-circle-right"></i>
+                    </div>
+                    
+                </fieldset> 
+                <!----------------- END OF DELIVERY LOCATION ---------------------->
+                
+                <!----------------- BUILD YOUR ORDER ---------------------->
+                <fieldset id="order">
+					<legend>BUILD YOUR ORDER</legend>
+					<div class="row">
+					<span class="col-xs-6 col-sm-2" id="totalPrice"></span><span class="col-xs-6 col-sm-4 pull-right" id="price">Price:</span>
+					</div>
+					<h4 class="col-xs-12 text-center">Choose Your Crust</h4>
+                    <div class="row">
+                         <label class="radio-inline col-xs-12 col-sm-3 text-center">
+                            <input type="radio" name="radioname" value="handTossed">Hand Tossed
+                        </label>
+                        <label class="radio-inline col-xs-12 col-sm-3 text-center">
+                            <input type="radio" name="radioname" value="thinCrust" checked>Thin Crust
+                        </label>
+                        <label class="radio-inline col-xs-12 col-sm-3 text-center">
+                            <input type="radio" name="radioname" value="newYorkStyle">New York Style
+                        </label>
+                        <label class="radio-inline col-xs-12 col-sm-3 text-center">
+                            <input type="radio" name="radioname" value="glutenFree">Gluten Free
+                        </label>
+                    </div><br><br>
+                        <div>
+                            <label class="col-xs-3" for="sizePizza">Choose Your Size:</label>
+                            <select class="col-xs-9" id="sizePizza" name="sizePizza">
+                            <option value = "text">--first select the crust and then size--</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="col-xs-3" for="cheese">Cheese?</label>
+                            <select class="col-xs-9" id="cheese" name="cheese">
+                            </select>
+                        </div>
+                        <div>
+                            <label class="col-xs-3" for="sauce">Mmm... Sauce</label>
+                            <select class="col-xs-9" id="sauce" name="sauce">
+                            </select>
+                        </div>
+                    <div id="toppings">
+                    <h4 class="col-xs-12 text-center">Toppings</h4>
+                    	<div class="row">
+                    		<label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="checkbox" value="0.99"><span>pepperoni</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="sausage" value="0.99"><span>sausage</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="ham" value="0.99"><span>ham</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="bacon" value="0.99"><span>bacon</span>
+                    	    </label>
+                    	</div><br>
+                    	<div class="row">
+                    	     <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="salami" value="0.99"><span>salami</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="peppers" value="0.99"><span>peppers</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="olives" value="0.99"><span>olives</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="jalapenos" value="0.99"><span>jalapenos</span>
+                    	    </label>
+                    	</div><br>
+                    	<div class="row">
+                    	     <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="mushrooms" value="0.99"><span>mushrooms</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="pineapple" value="0.99"><span>pineapple</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="onion" value="0.99"><span>onion</span>
+                    	    </label>
+                    	    <label class="col-xs-12 col-sm-3">
+                    	        <input type="checkbox" name="tomatoes" value="0.99"><span>tomatoes</span>
+                    	    </label><br><br><br>
+                    	</div>
+                    </div>
+                    <div class="row">
+                   			<input id="back" class="btn-lg" type="button" value="Back"><i class="fas fa-arrow-circle-left"></i>
+                    		                    	
+                    		<input id="finishBuild" type="button" value="Finished Building Pizza" class="btn-lg pull-right">
+                    </div>
+                </fieldset> 
+                <!------------ END OF BUILD YOUR ORDER --------------->
+			</form>
+		</div>
+		
+		<!------------------ BILLING INFORMATION -------------------->
+		<fieldset id="billingInfo">
+			<legend>ORDER REVIEW</legend>
+			<div class="row">
+				<div class="col-12">
+					<p>Please review your order and complete the fields below, then choose a payment type and click "Place Your Order".</p>
+				</div><br>
+				
+				<legend>ORDER SETTINGS</legend>
+				<div class="col-12">
+					<p class="markup">Service Method &#38; Location</p>
+					<p>Delivery to address: <span id="deliveryAddress"></span></p>
+					<p class="markup">Order Timing - Now</p>
+					<p>Your order will be ready 10-20 MINUTES after it is placed.</p>
+					<p class="markup">To PLACE YOUR ORDER, complete the fields below.</p>
+				</div><br>
+			</div>
+			
+			<legend>YOUR INFORMATION</legend>
+					<div class="row">
+					<div class="col-12 checkbox">
+						<input type="checkbox" id="sameDelivery" name="sameDelivery" value="true">
+						<label for="sameDelivery">Same as delivery information</label>
+					</div>
+						<form id="billingAddressForm">
+							<div class="row">
+								<label class="col-xs-3 col-sm-3" for="name"><span class="req">&#42;</span>Full Name:</label>
+								<input class="col-xs-9 col-sm-9" type="text" id="nameBilling" name="name" value="">
+							</div>
+			
+			
+			
+							<div class="row">
+								<label class="col-xs-3 col-sm-3" for="address"><span class="req">&#42;</span>Street Address:</label>
+								<input class="col-xs-9 col-sm-9" type="text" id="addressBilling" value="">
+							</div>
+			
+			
+							<div class="row">
+								<label class="col-xs-3 col-sm-3" for="room">Suite/Room/Apt#</label>
+								<input class="col-xs-3 col-sm-9" type="text" id="roomBilling" value="">
+							</div>
+						                    
+							<div class="row">
+								<label class="col-xs-3 col-sm-3" for="city"><span class="req">&#42;</span>City:</label>
+								<input class="col-xs-9 col-sm-3" type="text" id="cityBilling" value="">
+								<label class="col-xs-3 col-sm-1" for="state"><span class="req">&#42;</span>State:</label>
+								<input class="col-xs-9 col-sm-1" type="text" id="stateBilling" name="state" value="">
+								<label class="col-xs-3 col-sm-2" for="zip"><span class="req">&#42;</span>Zip Code:</label>
+								<input class="col-xs-9 col-sm-2" type="text" id="zipBilling" name="zip" value="">
+							</div>
+						</form> 
+					</div>
+					
+					<legend>PAYMENT INFORMATION</legend>
+					<p class="col-12">We accept Visa, Mastercard, and AMEX cards.</p>
+					<p class="col-12 markup">Balance Due: $<span id="balance_due"></span></p>
+					<div class="row">
+						<fieldset id="creditCardForm">
+							<div class="row">
+								<label class="col-xs-3 col-sm-3" for="cardNumber"><span class="req">&#42;</span>Card Number:</label>
+								<input class="col-xs-9 col-sm-9" type="text" id="cardNumber" value="">
+							</div>
+							<div class="row">
+								<label class="col-xs-4 col-sm-3" for="cardMonth"><span class="req">&#42;</span>Expiration Date:</label>
+			                    <select class="col-xs-4 col-sm-4" id="monthCard" name="month">
+									<option value="text">month</option>
+									<option value="1">Jan (01)</option>
+									<option value="2">Feb (02)</option>
+									<option value="3">Mar (03)</option>
+									<option value="4">Apr (04)</option>
+									<option value="5">May (05)</option>
+									<option value="6">June (06)</option>
+									<option value="7">July (07)</option>
+									<option value="8">Aug (08)</option>
+									<option value="9">Sep (09)</option>
+									<option value="10">Oct (10)</option>
+									<option value="11">Nov (11)</option>
+									<option value="12">Dec (12)</option>
+								</select>
+			                            <div class="col-xs-4 col-sm-1"></div>
+			                            <select class="col-xs-4 col-sm-4" id="cardYear" name="year">
+									<option value="text">year</option>
+									<option value="2018">2018</option>
+									<option value="2019">2019</option>
+									<option value="2020">2020</option>
+									<option value="2021">2021</option>
+									<option value="2022">2022</option><option value="2023">2023</option>
+									<option value="2024">2024</option>
+									<option value="2025">2025</option>
+									<option value="2026">2026</option>
+									<option value="2027">2027</option>
+								</select>
+							</div>
+							<div class="row">
+								<label class="col-xs-3 col-sm-3" for="cvcCard"><span class="req">&#42;</span>Security Code:</label>
+								<input class="col-xs-4 col-sm-4" type="text" id="cardCvc" value="">
+							</div><br>
+							<p class="last"><span class="req">&#42;</span>Indicates required field.</p>
+						</fieldset>
+						<input id="placeOrder" type="button" value="PLACE YOUR ORDER" class="btn-lg pull-right">
+					</div>
+					
+		</fieldset>
+		<!------------------ END OF BILLING INFORMATION -------------------->
+		
+		<footer class="footer">
+			<p>&copy; 2018 Pizzario, Inc.</p>
+		</footer>
+
+	</div> <!-- /container -->
+	
+	<!-- JS -->
+    <script src="js/script.js"></script>
+    
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<!--
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	-->
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>

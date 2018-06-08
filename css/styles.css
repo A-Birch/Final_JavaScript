@@ -1,0 +1,311 @@
+body {
+	background-color: #0c1115;
+	font-family: 'Roboto', sans-serif;
+    /*background: url("../css/bg-scuffedstatic_dark_1920x1234.jpg"); 
+	*/
+   
+}
+
+/*grey - #5e5e5e
+  red - #9a0606 
+  orange - #852f00 */
+
+#logo {
+	width: 150px;
+	height: 120px;
+	background: url("../images/logo-pizzario.png") center no-repeat;
+}
+
+#pic {
+	width: 100%;
+	height: 250px;
+	background: url("../images/igor-ovsyannykov-458022-unsplash.jpg") no-repeat;
+	background-size: cover;
+}
+
+fieldset {
+	margin-bottom: 20px;
+}
+
+legend {
+	color: #852f00;	
+	border-bottom: 2px solid #9a0606;
+	margin-bottom: 5px;
+}
+
+#delivery p:first-of-type {
+	margin-bottom: 30px;
+	font-style: italic;
+	letter-spacing: 1px;
+}
+
+
+#order legend {
+	margin-bottom: 5px;
+}
+
+
+#other {
+	display: none;
+}
+
+.header {
+	vertical-align: bottom;
+	
+}
+
+input[id="next"] {
+	margin-top: 40px;
+	width: 100px;
+	float: right;
+}
+
+footer {
+	text-align: center;
+}
+
+.row {
+	margin-right: 0;
+    margin-left: 0;
+}
+
+input {
+    line-height: 25px;
+	margin-bottom: 20px;
+}
+
+select {
+    height: 30px;
+	margin-bottom: 25px;
+}
+
+.radio-inline {
+    margin-left: 0 !important;
+}
+
+#hideSize, #hideCheese, #hideSauce, #hideToppings {
+    display: none;
+}
+
+input:focus {
+    border: 1px solid green;
+    background-color: #d9ffd3;
+	color: black;
+}
+
+h4 {
+	margin-bottom: 30px;
+}
+
+#placeOrder {
+	background-color: #F52A3F;
+	color: azure;
+	font-weight: 700;
+}
+
+#price {
+	line-height: 40px;
+	color: antiquewhite;
+	background: #0047D3;
+	border-right: 3px solid #0c1115;
+	text-align: right;
+	vertical-align: middle;
+	padding-right: 10px;
+	font-size: 30px;
+	letter-spacing: 2px;
+	border-radius: 5px;
+	
+}
+
+#totalPrice {
+	float: right;
+	color: antiquewhite;
+	line-height: 40px;
+	background: #A01447;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 30px;
+	border-radius: 0px 5px 5px 0px;
+	margin-bottom: 20px;
+}
+
+#toppings span {
+	font-weight: 500;
+	margin-left: 5px;
+	vertical-align: top;
+}
+
+#next {
+	width: 20%;
+	margin: 0 auto;
+	background-color: #FFD165;
+	color: #383738;
+	font-weight: 600;
+	border-color: #383738;
+	border-radius: 0 20px 20px 0;
+}
+
+#delivery div:nth-child(9) {
+	margin-bottom: 30px;
+}
+
+#back {
+	width: 20%;
+	margin: 0 auto;
+	background-color: #FFD165;
+	color: #383738;
+	font-weight: 600;
+	border-color: #383738;
+	border-radius: 18px 0 0 18px;
+}
+
+.fa-arrow-circle-left {
+	font-size: 47px;
+	position: relative;
+	left:-144px;
+	top: -3px;
+	vertical-align: middle;
+	color: #383738; 
+}
+
+.fa-arrow-circle-right {
+	font-size: 46px;
+	position: relative;
+	left: 656px;
+	vertical-align: middle;
+	color: #383738; 
+}
+
+
+#finishBuild {
+	width: 33%;
+	margin: 0 auto;
+	background-color: yellowgreen;
+	color: brown;
+	font-weight: 600;
+	border-color: #383738;
+}
+
+.req {
+	position: relative;
+	top: -5px;
+	color: red;
+	margin-right: 3px;
+}
+
+label {
+	line-height: 30px;
+	font-size: 0.9em;
+	font-weight: 600;
+	margin-bottom: 20px;
+	text-align: right;
+	vertical-align: middle;
+	letter-spacing: 0.05em;
+	padding-left: 2px !important;
+}
+
+#toppings label {
+	margin-bottom: 0;
+	text-align: left;
+} 
+
+#toppings {
+	margin-bottom: 20px;
+}
+
+
+#billingInfo legend {
+	margin-bottom: 20px;
+}
+
+#billingInfo p {
+	font-size: 1.1em;
+}
+
+#billingInfo p:nth-child(7) {
+	display: inline-block;
+	margin-bottom: 30px;
+}
+
+.last {
+	font-style: italic;
+	letter-spacing: 1px;
+	margin-top: 0;
+}
+
+.markup {
+	color: #59AEA0;
+}
+
+h2 {
+	color: orange; /*#852f00;*/
+	margin-bottom: 0;
+}
+
+hr {
+	border-color: #9a0606;
+}
+
+.checkbox {
+	margin-left: 20px;
+}
+
+.checkbox input {
+	height: 20px;
+	vertical-align: middle;
+}
+
+#balance_due {
+	text-decoration: underline;
+}
+
+/* ------- TOOLTIP --------- */
+
+.stooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltiptext {
+	/*visibility: hidden; */
+	display: none
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+.stooltip:hover .tooltiptext {
+	display: block;
+    /*visibility: visible;*/
+    opacity: 1;
+}
+
+.valid {
+	width: 100%;
+	border: 2px solid green;
+	border-left: 7px solid green;
+}
+
+.inValid {
+	border: 2px solid #ED5040;
+	border-left: 7px solid red;
+}
