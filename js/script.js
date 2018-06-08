@@ -94,7 +94,16 @@ function isValid(pattern, id, text) {
 }
 
 function isEmptyFields(id) {
-	
+	var input = $(id).getElementsByTagName('input');
+	for (var x in input) {
+		if (input[x].value == '') {
+			window.alert("Fill in the empty fields, please.")
+			break
+		} else {
+			toggleBlock(id, 'none');
+			toggleBlock('order', 'block');
+		}
+	}
 }
 
 // ----------------- CHOOSE A SIZE OF PIZZA ----------------
@@ -338,7 +347,7 @@ function main() {
 		window.addEventListener("load", function () {
 			"use strict";
 			
-			$('name').addEventListener("input", function(e) {
+			$('name').addEventListener("input", function() {
 				isValid (/^[a-zA-Z]+\s[a-zA-Z]+\s?$/,'name', 'It should be only letters');
 			});
 			
@@ -369,23 +378,7 @@ function main() {
 			});
 
 			$("next").addEventListener("click", function () {
-				var input = $('delivery').getElementsByTagName('input');
-				/*
-				do {
-					for (var x in input) {
-						if (input[x].value === '') {
-							window.alert("Fill in the blank fields, please");
-							$('delivery').focus();
-							return false;
-						} else {
-							return true;
-						}
-					}
-				} while (false);
-				*/
-				toggleBlock('delivery', 'none');
-				toggleBlock('order', 'block');
-				
+				isEmptyFields('delivery');
 			});
 			
 			
