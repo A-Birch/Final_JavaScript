@@ -6,6 +6,8 @@ var $ = function (id) {
 };
 
 var total;
+var correct = [];
+
 var pizza = {
     handTossed: {
 				Small: 9.99,
@@ -73,36 +75,80 @@ function toggleBlock (id, status) {
 
 // ------------------- END OF HIDING BLOCKS ------------------- //
 
-
 //---------------- VALIDATION FORM ---------------------
 
 
-function isValid(pattern, id, text) {
+function isValidInput(pattern, id, text) {
 	"use strict";
-	var result = pattern.test($(id).value.trim());
-	if (result == false) {
-		$(id).style.border = "2px solid #ED5040";
-		$(id).style.borderLeft = "7px solid red";
-		$(id).style.color = "#c10f0f";
-		$(id).nextElementSibling.firstChild.nodeValue = text;
-		$(id).focus();
-	} else {
-		$(id).style.border = "2px solid green";
-		$(id).style.borderLeft = "7px solid green";
-		$(id).style.color = "black";
+	var result = pattern.test($(id).value);
+
+	//This condition was created to avoid a problem with an alining elements in the delivery section
+	if (id === 'city' || id === 'state' || id === 'zip' || id === 'cityBilling' || id === 'stateBilling' || id === 'zipBilling') {
+		if (result == false) {
+			$(id).style.border = "2px solid #ED5040";
+			$(id).style.borderLeft = "7px solid red";
+			$(id).style.color = "#c10f0f";
+			$('triple').nextElementSibling.firstChild.nodeValue = text;
+			$('bill').nextElementSibling.firstChild.nodeValue = text;
+			$(id).focus();
+			return correct[id] = false;
+		} else {
+			$(id).style.border = "2px solid green";
+			$(id).style.borderLeft = "7px solid green";
+			$(id).style.color = "black";
+			$('triple').nextElementSibling.firstChild.nodeValue = ' ';
+			$('bill').nextElementSibling.firstChild.nodeValue = ' ';
+			return correct[id] = true;
+		}
+	}
+
+	if (id !== 'city' || id !== 'state' || id !== 'zip') {
+		if (result == false || $(id).value === '') {
+			$(id).style.border = "2px solid #ED5040";
+			$(id).style.borderLeft = "7px solid red";
+			$(id).style.color = "#c10f0f";
+			$(id).nextElementSibling.firstChild.nodeValue = text;
+			$(id).focus();
+			return correct[id] = false;
+		} else {
+			$(id).style.border = "2px solid green";
+			$(id).style.borderLeft = "7px solid green";
+			$(id).style.color = "black";
+			$(id).nextElementSibling.firstChild.nodeValue = ' ';
+			return correct[id] = true;
+		}
 	}
 }
 
-function isEmptyFields(id) {
+function isValidValue(id, id_2, n) {
 	var input = $(id).getElementsByTagName('input');
-	for (var x in input) {
-		if (input[x].value == '') {
-			window.alert("Fill in the empty fields, please.")
-			break
-		} else {
-			toggleBlock(id, 'none');
-			toggleBlock('order', 'block');
+
+	var count = 0;
+
+	for (var i = 0; i<input.length; i++) {
+		if (input[i].value == '') {
+			//This condition was created to avoid a problem with an alining elements in the delivery section
+			if (id === 'city' || id === 'state' || id === 'zip' || id === 'cityBilling' || id === 'stateBilling' || id === 'zipBilling') {
+				$('triple').nextElementSibling.firstChild.nodeValue = 'This is required field.';
+				$('bill').nextElementSibling.firstChild.nodeValue = 'This is required field.';
+			} else {
+				input[i].nextElementSibling.firstChild.nodeValue = 'This is required field.';
+			}
+			input[i].focus();
+			break;
 		}
+	}
+
+	for (var item in correct) {
+
+		if (correct[item] === true) {
+			count++;
+		}
+	}
+
+	if (count === n) {
+		toggleBlock(id, 'none');
+		toggleBlock(id_2, 'block');
 	}
 }
 
@@ -240,40 +286,52 @@ function displayAddress () {
 	$('deliveryAddress').innerText = str.toUpperCase();
 }
 
-function checkCard (e) {
-	"use strict";
-	var cardVisa = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
-	var cardMaster = /^(?:5[1-5][0-9]{14})$/;
-	var cardAmex = /^(?:3[47][0-9]{13})$/;
-	
-	var cardNumber = e.target.value;
-	window.console.log(cardNumber);
-	
-	function splitString(stringToSplit) {
-		var arrayOfStrings = stringToSplit.split('');
+function checkExpData() {
+	if ($('cardMonth').value === 'text' || $('cardYear').value === 'text') {
+		$('cardYear').nextElementSibling.firstChild.nodeValue = 'Choose expiration date.';
+		//return correct['cardMonth'] = false;
+		return correct['cardYear'] = false;
+	} else {
+		var today, someday;
+		var expMonth = $("cardMonth").value;
+		var expYear = $("cardYear").value;
+		today = new Date();
+		someday = new Date();
+		someday.setFullYear(expYear, expMonth, 1);
+
+		if (someday < today) {
+			$('cardYear').nextElementSibling.firstChild.nodeValue = "The expiry date is before today's date. Please select a valid expiry date.";
+			//return correct['cardMonth'] = false;
+			return correct['cardYear'] = false;
+		}
+		$('cardYear').nextElementSibling.firstChild.nodeValue = ' ';
+		//return correct['cardMonth'] = true;
+		return correct['cardYear'] = true;
 	}
+}
+
+function checkCard (value) {
+	"use strict";
 	
-	function formatInput () {
-		var $this = $(this);
-		var input = $this.val();
+	if (/[^0-9-\s]+/.test(value)) return false;
 
-		// 2
-		input = input.replace(/[\W\s\._\-]+/g, '');
+	// The Luhn Algorithm. It's so pretty.
+	var nCheck = 0, nDigit = 0, bEven = false;
+	value = value.replace(/\D/g, "");
 
-		// 3
-		var split = 4;
-		var chunk = [];
+	for (var n = value.length - 1; n >= 0; n--) {
+		var cDigit = value.charAt(n),
+			nDigit = parseInt(cDigit, 10);
 
-		for (var i = 0, len = input.length; i < len; i += split) {
-		split = ( i >= 8 && i <= 16 ) ? 4 : 8;
-		chunk.push( input.substr( i, split ) );
+		if (bEven) {
+			if ((nDigit *= 2) > 9) nDigit -= 9;
 		}
 
-		// 4
-		$this.val(function() {
-		return chunk.join("-").toUpperCase();
-		});
+		nCheck += nDigit;
+		bEven = !bEven;
 	}
+	checkExpData();
+	return (nCheck % 10) == 0;
 }
 
 // ----- REMOVE FIRST NODE OF SELECT TAG IN THE BUILD ORDER SECTION -------
@@ -285,50 +343,11 @@ function removeSelectNode(id) {
 }
 
 
-	/*
-	replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-	e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-			});
-	*/
-	/*
-	if ($('cardNumber').value.replace(/\D/g, '').match(/\d/g)) {
-		return true;
-	} else {
-		window.console.log('put just digits, no letters or specific characters');
-		$('cardNumber').focus();
-	}
-	
-	<i class="fab fa-cc-visa"></i>
-	<i class="fab fa-cc-mastercard"></i>
-	<i class="fab fa-cc-amex"></i>
-	*/
-	//cardNumber = splitString(eventNumber);
-	/*
-	if (cardNumber[0] === '4') {
-		window.console.log('your card Visa');
-		var x = e.target.value.replace(/\d/g, '').match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
-			e.target.value = !x[2] ? x[1] : '-' + x[1] + '-' + x[2] + (x[4] ? '-' + x[4] : '');
-		if (cardNumber.match(cardVisa)) {
-			
-			$('cardNumber').focus();
-		}
-	} else if (cardNumber.match(cardMaster)) {
-		window.console.log('your card MasterCard');
-		$('cardNumber').focus();
-	} else if (cardNumber.match(cardAmex)) {
-		window.console.log('your card AmericanExpress');
-		$('cardNumber').focus();
-	} else {
-		window.console.log('Wrong card number. Try again.');
-		$('cardNumber').focus();
-	}
-	*/
-
-
 function main() {
 	"use strict";
 	toggleBlock ('order', 'none');
 	toggleBlock ('billingInfo', 'none');
+	toggleBlock ('complete', 'none');
 	//PUT 0 IN TOTAL PRICE
 	calculateTotal();
 	
@@ -341,44 +360,50 @@ function main() {
 	createMenuCheese();
 	createMenuSauce();
 	
-	
-	
+
 	//EVENT LISTENER
 		window.addEventListener("load", function () {
 			"use strict";
 			
+
 			$('name').addEventListener("input", function() {
-				isValid (/^[a-zA-Z]+\s[a-zA-Z]+\s?$/,'name', 'It should be only letters');
+				isValidInput(/^[A-Za-z]+$/,'name', 'Enter only letters.');
 			});
 			
 			
 			$("addressType").addEventListener("change", addOtherInput);
 
 			$('phone').addEventListener('input', function (e) {
+				$('phone').setAttribute('maxlength', '14');
+				isValidInput (/^\(?([0-9]{3})\)?[) ]?([0-9]{3})[- ]?([0-9]{4})$/, 'phone', '');
 				var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
 				e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
 			});
 			
+			$('address').addEventListener("input", function () {
+				isValidInput (/^[a-z0-9\s,'-]*$/i, 'address', 'Alphanumeric characters only.');
+			});
+
 			$('city').addEventListener("input", function() {
-				isValid (/(?:[A-Z][a-z.-]+[ ]?)+/i,'city', '');
+				isValidInput (/^[a-zA-Z\u0080-\u024F\s\/\-\)\(\`\.\"\']+$/,'city', 'The city must be written by only letters.');
 			});
 			
 			$('state').addEventListener("input", function() {
 				$('state').setAttribute('maxlength', '2');
-				isValid (/(AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NB|NC|ND|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)$/i,'state', 'Wrong state');
+				isValidInput (/(AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NB|NC|ND|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)$/i,'state', 'Wrong state');
 			});
 			
 			$('zip').addEventListener("input", function() {
 				$('zip').setAttribute('maxlength', '5');
-				isValid (/^\d{5}?$/,'zip', '');
+				isValidInput (/^\d{5}?$/,'zip', 'Zip code must be 5 digits.');
 			});
 			
 			$('email').addEventListener("input", function() {
-				isValid (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,'email', 'E-mail should be example@example.com');
+				isValidInput (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,'email', 'E-mail must be kind of example@example.com');
 			});
 
 			$("next").addEventListener("click", function () {
-				isEmptyFields('delivery');
+				isValidValue('delivery', 'order', 7);
 			});
 			
 			
@@ -419,7 +444,10 @@ function main() {
 			});
 			
 			$('finishBuild').addEventListener("click", function() {
+
 				var r = confirm('Are you sure?');
+				correct = [];
+
 				if (r == true) {
 					toggleBlock('order', 'none');
 					toggleBlock('billingInfo', 'block');
@@ -433,88 +461,90 @@ function main() {
 			});
 			
 			$('nameBilling').addEventListener("input", function() {
-				isValid (/^[a-zA-Z]+\s[a-zA-Z]+\s?$/,'nameBilling', 'It should be only letters');
+				isValidInput (/^[a-zA-Z]+\s[a-zA-Z]+\s?$/,'nameBilling', 'Enter your name and surname. It should be only letters');
+			});
+
+			$('addressBilling').addEventListener("input", function () {
+				isValidInput (/^[a-z0-9\s,'-]*$/i, 'addressBilling', 'Alphanumeric characters only.');
 			});
 			
 			$('cityBilling').addEventListener("input", function() {
-				isValid (/(?:[A-Z][a-z.-]+[ ]?)+/i,'cityBilling', '');
+				isValidInput (/^[a-zA-Z\u0080-\u024F\s\/\-\)\(\`\.\"\']+$/,'cityBilling', 'The city must be written by only letters.');
 			});
 			
 			$('stateBilling').addEventListener("input", function() {
 				$('stateBilling').setAttribute('maxlength', '2');
-				isValid (/(AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NB|NC|ND|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)$/i,'stateBilling', 'Wrong state');
+				isValidInput (/(AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NB|NC|ND|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)$/i,'stateBilling', 'Wrong state');
 			});
 			
 			$('zipBilling').addEventListener("input", function() {
 				$('zipBilling').setAttribute('maxlength', '5');
-				isValid (/^\d{5}?$/,'zipBilling', '');
+				isValidInput (/^\d{5}?$/,'zipBilling', 'Zip code must be 5 digits.');
 			});
 			
 			
 			$('cardNumber').addEventListener("input", function (e) {
-				var x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
-				e.target.value = !x[2] ? x[1] : '' + x[1] + ' ' + x[2] + (x[3] ? ' ' + x[3] : '') + (x[4] ? ' ' + x[4] : '');
+				var x;
 				
-						
+				if (e.target.value[0] === '4') {
+					x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
+					e.target.value = !x[2] ? x[1] : '' + x[1] + ' ' + x[2] + (x[3] ? ' ' + x[3] : '') + (x[4] ? ' ' + x[4] : '');
+					$('cardIcon').style.background = "url('/images/visa.svg') center no-repeat";
+					$('cardNumber').nextElementSibling.firstChild.nodeValue = ' ';
+					isValidInput(/[0-9]{4} {0,1}[0-9]{4} {0,1}[0-9]{4} {0,1}[0-9]{4}/, 'cardNumber', "Enter 13 or 16 digits for Visa card");
+				} else if ((e.target.value[0] === '5' && e.target.value[1] === '1') || (e.target.value[0] === '5' && e.target.value[1] === '2') || (e.target.value[0] === '5' && e.target.value[1] === '3') || (e.target.value[0] === '5' && e.target.value[1] === '4') || (e.target.value[0] === '5' && e.target.value[1] === '5'))  {
+					x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
+					e.target.value = !x[2] ? x[1] : '' + x[1] + ' ' + x[2] + (x[3] ? ' ' + x[3] : '') + (x[4] ? ' ' + x[4] : '');
+					$('cardIcon').style.background = "url('images/mastercard.svg') center no-repeat";
+					$('cardNumber').nextElementSibling.firstChild.nodeValue = ' ';
+					isValidInput(/[0-9]{4} {0,1}[0-9]{4} {0,1}[0-9]{4} {0,1}[0-9]{4}/, 'cardNumber', "Enter 16 digits for Mastercard");
+				} else if (e.target.value[0] === '3' && e.target.value[1] === '7') {
+
+					x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})(\d{0,6})(\d{0,5})/);
+					e.target.value = !x[2] ? x[1] : '' + x[1] + ' ' + x[2] + (x[3] ? ' ' + x[3] : '');
+					$('cardIcon').style.background = "url('/images/amex.svg') center no-repeat";
+					$('cardNumber').nextElementSibling.firstChild.nodeValue = ' ';
+					isValidInput(/[0-9]{4} {0,1}[0-9]{6} {0,1}[0-9]{5}/, 'cardNumber', "Enter 15 digits for Amex card.");
+				} else {
+					$('cardNumber').nextElementSibling.firstChild.nodeValue = 'This number is not valid.';
+					x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})/);
+					e.target.value = !x[2] ? x[1] : '';
+					return correct['cardNumber'] = false;
+				}
+
 			});
 
+			$('cardMonth').addEventListener("change", function () {
+				checkExpData();
+			});
+
+			$('cardYear').addEventListener("change", function () {
+				checkExpData();
+			});
+
+
+			$('cardCvc').addEventListener("input", function (e) {
+				var x;
+				x = e.target.value.replace(/\D/g, '').match(/(\d{0,4})/);
+				e.target.value = !x[2] ? x[1] : '' + x[1] + ' ' + x[2];
+				isValidInput(/^[0-9]{3,4}$/, 'cardCvc', "Enter 3 digits for Mastercard or Visa cards. And 4 digits for Amex card.");
+
+			});
+
+			$("placeOrder").addEventListener("click", function () {
+				var valueCard = $('cardNumber').value;
+				if (!checkCard(valueCard)) {
+					$('cardNumber').nextElementSibling.firstChild.nodeValue = 'This number is not valid.'
+				}
+
+				if ($('sameDelivery').checked) {
+					isValidValue('billingInfo', 'complete', 3);
+				} else {
+					isValidValue('billingInfo', 'complete', 8);
+				}
+			});
 		}); // --- END OF EVENT LISTENER
-}
+}  // --- END OF MAIN()
 	
     
  main();   
-   
-	// ---------- TOOLTIP ---------
-/*	
-var div = $("next");
-var a = document.getElementById("a");
-var fadeSpeed = 25; // a value between 1 and 1000 where 1000 will take 10
-                    // seconds to fade in and out and 1 will take 0.01 sec.
-var tipMessage = "The content of the tooltip...";
-
-var showTip = function(){    
-    var tip = document.createElement("span");
-    tip.className = "tooltip";
-    tip.id = "tip";
-    tip.innerHTML = tipMessage;
-    div.appendChild(tip);
-    tip.style.opacity="0"; // to start with...
-    var intId = setInterval(function(){
-        newOpacity = parseFloat(tip.style.opacity)+0.1;
-        tip.style.opacity = newOpacity.toString();
-        if(tip.style.opacity == "1"){
-            clearInterval(intId);
-        }
-    }, fadeSpeed);
-};
-var hideTip = function(){
-    var tip = document.getElementById("tip");
-    var intId = setInterval(function(){
-        newOpacity = parseFloat(tip.style.opacity)-0.1;
-        tip.style.opacity = newOpacity.toString();
-        if(tip.style.opacity == "0"){
-            clearInterval(intId);
-            tip.remove();
-        }
-    }, fadeSpeed);
-    tip.remove();
-};
-
-$("next").addEventListener("mouseover", showTip, false);
-$("next").addEventListener("mouseout", hideTip, false);
-*/
-
-
-// ----------- valid or invalid -----
-
-/*
- $("name").addEventListener("blur", function(e){
-        "use strict";
-        if(isValidFullName(e.currentTarget.value)) {
-            validateInput(e.currentTarget.id, true, "looks good");   
-        } else {
-            validateInput(e.currentTarget.id, false, "invalid input"); 
-        }
-    });
-	
-*/
